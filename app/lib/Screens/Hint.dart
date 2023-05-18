@@ -11,6 +11,8 @@ import 'package:app/widgets/bottom_nav.dart';
 import 'package:circle_nav_bar/circle_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:app/screens/home_screen.dart';
+// 폭죽
+import 'package:confetti/confetti.dart';
 
 class Hint extends StatefulWidget {
   const Hint({required this.mentionId, Key? key});
@@ -22,6 +24,8 @@ class Hint extends StatefulWidget {
 }
 
 class _HintState extends State<Hint> {
+  // 폭죽
+  late ConfettiController _confettiController;
   var firstsigmaX = 6.0;
   var firstsigmaY = 6.0;
   var secondsigmaX = 6.0;
@@ -39,7 +43,14 @@ class _HintState extends State<Hint> {
   int checkpage = 0;
 
   @override
+  void dispose() {
+    _confettiController.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
+    _confettiController = ConfettiController(duration: Duration(seconds: 1));
     super.initState();
     getHint();
     // print(hintStatus);
@@ -184,159 +195,197 @@ class _HintState extends State<Hint> {
       ),
       child: Scaffold(
           backgroundColor: Colors.transparent,
-          body: Column(
-            children: [
-              Flexible(
-                flex: 1,
-                child: Row(
-                  children: [
-                    Flexible(
-                      flex: 2,
-                      child: Container(),
-                    ),
-                    Flexible(
-                      flex: 1,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
-                        child: Row(
-                          children: [
-                            Image.asset(
-                              "assets/images/coin.png",
-                              width: MediaQuery.of(context).size.width * 0.13,
-                              height: MediaQuery.of(context).size.height * 0.09,
-                            ),
-                            Text(
-                              "$bang",
-                              style: TextStyle(
-                                fontSize: 24,
+          body: Stack(children: [
+            //폭죽 위젯
+            Column(
+              children: [
+                Flexible(
+                  flex: 1,
+                  child: Row(
+                    children: [
+                      Flexible(
+                        flex: 2,
+                        child: Container(),
+                      ),
+                      Flexible(
+                        flex: 1,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
+                          child: Row(
+                            children: [
+                              Image.asset(
+                                "assets/images/coin.png",
+                                width: MediaQuery.of(context).size.width * 0.13,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.09,
                               ),
-                            )
-                          ],
+                              Text(
+                                "$bang",
+                                style: TextStyle(
+                                  fontSize: 24,
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              Flexible(
-                flex: 1,
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 7.5,
-                            horizontal: 20,
+                Flexible(
+                  flex: 1,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
                           ),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  const Text(
-                                    '1단계',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.508,
-                                  ),
-                                  IconButton(
-                                    padding: const EdgeInsets.all(0),
-                                    onPressed: () {
-                                      hintStatus == 0
-                                          ? showDialog(
-                                              context: context,
-                                              barrierDismissible: true,
-                                              builder: (BuildContext context) {
-                                                return AlertDialog(
-                                                  shape:
-                                                      const RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                      Radius.circular(32.0),
-                                                    ),
-                                                  ),
-                                                  title: const Text("1단계"),
-                                                  content: const Text(
-                                                      "3뱅을 사용해 1단계 힌트를 열람할까요?"),
-                                                  insetPadding:
-                                                      const EdgeInsets.fromLTRB(
-                                                          0, 80, 0, 80),
-                                                  actions: [
-                                                    TextButton(
-                                                      child: const Text('결제'),
-                                                      onPressed: () {
-                                                        setState(() {
-                                                          changeBang = -3;
-                                                        });
-                                                        updateBang();
-                                                        updateHintStatus();
-                                                        getHint();
-                                                        Navigator.pop(context);
-                                                        setState(() {
-                                                          this.hintStatus = 1;
-                                                        });
-                                                      },
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                            )
-                                          : null;
-                                    },
-                                    icon: hintStatus == 0
-                                        ? Image.asset(
-                                            "assets/images/closelock.png",
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.1,
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.04,
-                                          )
-                                        : Image.asset(
-                                            "assets/images/openlock.png",
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.1,
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.04,
-                                          ),
-                                  ),
-                                ],
-                              ),
-                              hintStatus == 0
-                                  ? ImageFiltered(
-                                      imageFilter: ImageFilter.blur(
-                                        sigmaX: 3.5,
-                                        sigmaY: 4.0,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 7.5,
+                              horizontal: 20,
+                            ),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    const Text(
+                                      '1단계',
+                                      style: TextStyle(
+                                        fontSize: 20,
                                       ),
-                                      child: Container(
+                                    ),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.508,
+                                    ),
+                                    IconButton(
+                                      padding: const EdgeInsets.all(0),
+                                      onPressed: () {
+                                        hintStatus == 0
+                                            ? showDialog(
+                                                context: context,
+                                                barrierDismissible: true,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return AlertDialog(
+                                                    shape:
+                                                        const RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                        Radius.circular(32.0),
+                                                      ),
+                                                    ),
+                                                    title: const Text("1단계"),
+                                                    content: const Text(
+                                                        "3뱅을 사용해 1단계 힌트를 열람할까요?"),
+                                                    insetPadding:
+                                                        const EdgeInsets
+                                                                .fromLTRB(
+                                                            0, 80, 0, 80),
+                                                    actions: [
+                                                      TextButton(
+                                                        child: const Text('결제'),
+                                                        onPressed: () {
+                                                          setState(() {
+                                                            changeBang = -3;
+                                                          });
+                                                          _confettiController
+                                                              .play();
+                                                          updateBang();
+                                                          updateHintStatus();
+                                                          getHint();
+                                                          setState(() {
+                                                            this.hintStatus = 1;
+                                                          });
+                                                          Future.delayed(
+                                                              const Duration(
+                                                                  milliseconds:
+                                                                      500), () {
+                                                            Navigator.pop(
+                                                                context);
+                                                          });
+                                                        },
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              )
+                                            : null;
+                                      },
+                                      icon: hintStatus == 0
+                                          ? Image.asset(
+                                              "assets/images/closelock.png",
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.1,
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.04,
+                                            )
+                                          : Image.asset(
+                                              "assets/images/openlock.png",
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.1,
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.04,
+                                            ),
+                                    ),
+                                  ],
+                                ),
+                                hintStatus == 0
+                                    ? ImageFiltered(
+                                        imageFilter: ImageFilter.blur(
+                                          sigmaX: 3.5,
+                                          sigmaY: 4.0,
+                                        ),
+                                        child: Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.35,
+                                          decoration: BoxDecoration(
+                                            color: Color.fromARGB(
+                                                136, 191, 190, 190),
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                          child: Padding(
+                                            padding: EdgeInsets.fromLTRB(
+                                                20, 7, 20, 7),
+                                            child: Text(
+                                              "${hintOne}",
+                                              style: TextStyle(
+                                                  fontSize: 17,
+                                                  color: Color.fromARGB(
+                                                      221, 92, 91, 91)),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : Container(
                                         width:
                                             MediaQuery.of(context).size.height *
                                                 0.35,
                                         decoration: BoxDecoration(
-                                          color: Color.fromARGB(
-                                              136, 191, 190, 190),
+                                          color: const Color.fromARGB(
+                                              137, 169, 168, 168),
                                           borderRadius:
                                               BorderRadius.circular(20),
                                         ),
                                         child: Padding(
                                           padding:
-                                              EdgeInsets.fromLTRB(20, 7, 20, 7),
+                                              EdgeInsets.fromLTRB(28, 7, 28, 7),
                                           child: Text(
                                             "${hintOne}",
                                             style: TextStyle(
@@ -347,147 +396,159 @@ class _HintState extends State<Hint> {
                                           ),
                                         ),
                                       ),
-                                    )
-                                  : Container(
-                                      width:
-                                          MediaQuery.of(context).size.height *
-                                              0.35,
-                                      decoration: BoxDecoration(
-                                        color: const Color.fromARGB(
-                                            137, 169, 168, 168),
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      child: Padding(
-                                        padding:
-                                            EdgeInsets.fromLTRB(28, 7, 28, 7),
-                                        child: Text(
-                                          "${hintOne}",
-                                          style: TextStyle(
-                                              fontSize: 17,
-                                              color: Color.fromARGB(
-                                                  221, 92, 91, 91)),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ),
-                                    ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.03,
-              ),
-              Flexible(
-                flex: 1,
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 7.5,
-                            horizontal: 20,
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.03,
+                ),
+                Flexible(
+                  flex: 1,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
                           ),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  const Text(
-                                    '2단계',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.508,
-                                  ),
-                                  IconButton(
-                                    padding: const EdgeInsets.all(0),
-                                    onPressed: () {
-                                      hintStatus == 1
-                                          ? showDialog(
-                                              context: context,
-                                              barrierDismissible: true,
-                                              builder: (BuildContext context) {
-                                                return AlertDialog(
-                                                  shape:
-                                                      const RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                      Radius.circular(32.0),
-                                                    ),
-                                                  ),
-                                                  title: const Text("2단계"),
-                                                  content: const Text(
-                                                      "4뱅을 사용해 2단계 힌트를 열람할까요?"),
-                                                  insetPadding:
-                                                      const EdgeInsets.fromLTRB(
-                                                          0, 80, 0, 80),
-                                                  actions: [
-                                                    TextButton(
-                                                      child: const Text('결제'),
-                                                      onPressed: () {
-                                                        setState(() {
-                                                          changeBang = -4;
-                                                        });
-                                                        updateBang();
-                                                        updateHintStatus();
-                                                        getHint();
-                                                        setState(() {
-                                                          this.hintStatus = 2;
-                                                        });
-                                                        Navigator.pop(context);
-                                                      },
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                            )
-                                          : null;
-                                    },
-                                    icon: hintStatus != 2
-                                        ? Image.asset(
-                                            "assets/images/closelock.png",
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.1,
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.04,
-                                          )
-                                        : Image.asset(
-                                            "assets/images/openlock.png",
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.1,
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.04,
-                                          ),
-                                  ),
-                                ],
-                              ),
-                              hintStatus != 2
-                                  ? ImageFiltered(
-                                      imageFilter: ImageFilter.blur(
-                                        sigmaX: 6.0,
-                                        sigmaY: 6.0,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 7.5,
+                              horizontal: 20,
+                            ),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    const Text(
+                                      '2단계',
+                                      style: TextStyle(
+                                        fontSize: 20,
                                       ),
-                                      child: Container(
+                                    ),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.508,
+                                    ),
+                                    IconButton(
+                                      padding: const EdgeInsets.all(0),
+                                      onPressed: () {
+                                        hintStatus == 1
+                                            ? showDialog(
+                                                context: context,
+                                                barrierDismissible: true,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return AlertDialog(
+                                                    shape:
+                                                        const RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                        Radius.circular(32.0),
+                                                      ),
+                                                    ),
+                                                    title: const Text("2단계"),
+                                                    content: const Text(
+                                                        "4뱅을 사용해 2단계 힌트를 열람할까요?"),
+                                                    insetPadding:
+                                                        const EdgeInsets
+                                                                .fromLTRB(
+                                                            0, 80, 0, 80),
+                                                    actions: [
+                                                      TextButton(
+                                                        child: const Text('결제'),
+                                                        onPressed: () {
+                                                          setState(() {
+                                                            changeBang = -4;
+                                                          });
+                                                          _confettiController
+                                                              .play();
+                                                          updateBang();
+                                                          updateHintStatus();
+                                                          getHint();
+                                                          setState(() {
+                                                            this.hintStatus = 2;
+                                                          });
+                                                          Future.delayed(
+                                                              const Duration(
+                                                                  milliseconds:
+                                                                      500), () {
+                                                            Navigator.pop(
+                                                                context);
+                                                          });
+                                                        },
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              )
+                                            : null;
+                                      },
+                                      icon: hintStatus != 2
+                                          ? Image.asset(
+                                              "assets/images/closelock.png",
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.1,
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.04,
+                                            )
+                                          : Image.asset(
+                                              "assets/images/openlock.png",
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.1,
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.04,
+                                            ),
+                                    ),
+                                  ],
+                                ),
+                                hintStatus != 2
+                                    ? ImageFiltered(
+                                        imageFilter: ImageFilter.blur(
+                                          sigmaX: 6.0,
+                                          sigmaY: 6.0,
+                                        ),
+                                        child: Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.35,
+                                          decoration: BoxDecoration(
+                                            color: const Color.fromARGB(
+                                                137, 169, 168, 168),
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                          child: Padding(
+                                            padding: EdgeInsets.fromLTRB(
+                                                28, 7, 28, 7),
+                                            child: Text(
+                                              "${hintTwo}",
+                                              style: TextStyle(
+                                                  fontSize: 17,
+                                                  color: Color.fromARGB(
+                                                      221, 92, 91, 91)),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : Container(
                                         width:
                                             MediaQuery.of(context).size.height *
                                                 0.35,
@@ -510,221 +571,221 @@ class _HintState extends State<Hint> {
                                           ),
                                         ),
                                       ),
-                                    )
-                                  : Container(
-                                      width:
-                                          MediaQuery.of(context).size.height *
-                                              0.35,
-                                      decoration: BoxDecoration(
-                                        color: const Color.fromARGB(
-                                            137, 169, 168, 168),
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      child: Padding(
-                                        padding:
-                                            EdgeInsets.fromLTRB(28, 7, 28, 7),
-                                        child: Text(
-                                          "${hintTwo}",
-                                          style: TextStyle(
-                                              fontSize: 17,
-                                              color: Color.fromARGB(
-                                                  221, 92, 91, 91)),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ),
-                                    ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.03,
-              ),
-              Flexible(
-                flex: 2,
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 7.5,
-                            horizontal: 20,
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.03,
+                ),
+                Flexible(
+                  flex: 2,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          margin: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
                           ),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  const Text(
-                                    '3단계',
-                                    style: TextStyle(
-                                      fontSize: 20,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 7.5,
+                              horizontal: 20,
+                            ),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    const Text(
+                                      '3단계',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.508,
-                                  ),
-                                  IconButton(
-                                    padding: const EdgeInsets.all(0),
-                                    onPressed: () {
-                                      hintStatus == 2
-                                          ? showDialog(
-                                              context: context,
-                                              barrierDismissible: true,
-                                              builder: (BuildContext context) {
-                                                return AlertDialog(
-                                                  shape:
-                                                      const RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                      Radius.circular(32.0),
-                                                    ),
-                                                  ),
-                                                  title: const Text("3단계"),
-                                                  content: const Text(
-                                                      "5뱅을 사용해 상대를 확인할까요?"),
-                                                  insetPadding:
-                                                      const EdgeInsets.fromLTRB(
-                                                          0, 80, 0, 80),
-                                                  actions: [
-                                                    TextButton(
-                                                      child: const Text('결제'),
-                                                      onPressed: () {
-                                                        setState(() {
-                                                          setState(() {
-                                                            bang = bang - 5;
-                                                            changeBang = -5;
-                                                          });
-                                                          updateHintStatus();
-                                                          updateBang();
-                                                          Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                              builder:
-                                                                  (context) =>
-                                                                      lastHint(
-                                                                nickname:
-                                                                    hintThree,
-                                                                profileImg:
-                                                                    profileImg,
-                                                              ),
-                                                            ),
-                                                          );
-                                                        });
-                                                      },
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                            )
-                                          : null;
-                                    },
-                                    icon: thirdsigmaX == 6.0
-                                        ? Image.asset(
-                                            "assets/images/closelock.png",
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.1,
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.04,
-                                          )
-                                        : Image.asset(
-                                            "assets/images/openlock.png",
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.1,
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.04,
-                                          ),
-                                  ),
-                                ],
-                              ),
-                              thirdsigmaX == 6.0
-                                  ? ImageFiltered(
-                                      imageFilter: ImageFilter.blur(
-                                        sigmaX: 4.0,
-                                        sigmaY: 4.0,
-                                      ),
-                                      child: Container(
-                                        width:
-                                            MediaQuery.of(context).size.height *
-                                                0.12,
-                                        decoration: BoxDecoration(
-                                          color: Color.fromARGB(
-                                              136, 228, 225, 225),
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                        ),
-                                        child: Padding(
-                                            padding: EdgeInsets.fromLTRB(
-                                                0, 10, 0, 0),
-                                            child: Image.asset(
-                                                "assets/images/girl 2.png")),
-                                      ),
-                                    )
-                                  : Container(
+                                    SizedBox(
                                       width: MediaQuery.of(context).size.width *
-                                          0.373,
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.187,
-                                      decoration: BoxDecoration(
-                                        color: const Color.fromARGB(
-                                            137, 169, 168, 168),
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          Image.asset(
-                                              "assets/images/sample2.png"),
-                                        ],
-                                      ),
+                                          0.508,
                                     ),
-                              Padding(
-                                padding: const EdgeInsets.all(20.0),
-                                child: thirdsigmaX == 6.0
+                                    IconButton(
+                                      padding: const EdgeInsets.all(0),
+                                      onPressed: () {
+                                        hintStatus == 2
+                                            ? showDialog(
+                                                context: context,
+                                                barrierDismissible: true,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return AlertDialog(
+                                                    shape:
+                                                        const RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                        Radius.circular(32.0),
+                                                      ),
+                                                    ),
+                                                    title: const Text("3단계"),
+                                                    content: const Text(
+                                                        "5뱅을 사용해 상대를 확인할까요?"),
+                                                    insetPadding:
+                                                        const EdgeInsets
+                                                                .fromLTRB(
+                                                            0, 80, 0, 80),
+                                                    actions: [
+                                                      TextButton(
+                                                        child: const Text('결제'),
+                                                        onPressed: () {
+                                                          setState(() {
+                                                            setState(() {
+                                                              bang = bang - 5;
+                                                              changeBang = -5;
+                                                            });
+                                                            updateHintStatus();
+                                                            updateBang();
+                                                            Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        lastHint(
+                                                                  nickname:
+                                                                      hintThree,
+                                                                  profileImg:
+                                                                      profileImg,
+                                                                ),
+                                                              ),
+                                                            );
+                                                          });
+                                                        },
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              )
+                                            : null;
+                                      },
+                                      icon: thirdsigmaX == 6.0
+                                          ? Image.asset(
+                                              "assets/images/closelock.png",
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.1,
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.04,
+                                            )
+                                          : Image.asset(
+                                              "assets/images/openlock.png",
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.1,
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.04,
+                                            ),
+                                    ),
+                                  ],
+                                ),
+                                thirdsigmaX == 6.0
                                     ? ImageFiltered(
                                         imageFilter: ImageFilter.blur(
                                           sigmaX: 4.0,
                                           sigmaY: 4.0,
                                         ),
-                                        child: Text("여도현"),
+                                        child: Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.12,
+                                          decoration: BoxDecoration(
+                                            color: Color.fromARGB(
+                                                136, 228, 225, 225),
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                          child: Padding(
+                                              padding: EdgeInsets.fromLTRB(
+                                                  0, 10, 0, 0),
+                                              child: Image.asset(
+                                                  "assets/images/girl 2.png")),
+                                        ),
                                       )
-                                    : null,
-                              ),
-                            ],
+                                    : Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.373,
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.187,
+                                        decoration: BoxDecoration(
+                                          color: const Color.fromARGB(
+                                              137, 169, 168, 168),
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            Image.asset(
+                                                "assets/images/sample2.png"),
+                                          ],
+                                        ),
+                                      ),
+                                Padding(
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: thirdsigmaX == 6.0
+                                      ? ImageFiltered(
+                                          imageFilter: ImageFilter.blur(
+                                            sigmaX: 4.0,
+                                            sigmaY: 4.0,
+                                          ),
+                                          child: Text("여도현"),
+                                        )
+                                      : null,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.06,
-              )
-              // Flexible(
-              //   flex: 1,
-              //   child: Container(),
-              // )
-            ],
-          ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.06,
+                )
+                // Flexible(
+                //   flex: 1,
+                //   child: Container(),
+                // )
+              ],
+            ),
+            ConfettiWidget(
+              confettiController: _confettiController,
+              blastDirection: 0, // radial value - LEFT
+              maxBlastForce: 5, // set a lower max blast force
+              minBlastForce: 2, // set a lower min blast force
+              emissionFrequency: 0.05, // how often it should emit
+              numberOfParticles: 20, // number of particles to emit
+              gravity: 0.15, // gravity - or fall speed
+              shouldLoop: false,
+              colors: [
+                Colors.green,
+                Colors.blue,
+                Colors.pink,
+                Colors.orange,
+                Colors.purple
+              ],
+            ),
+          ]),
           bottomNavigationBar: BottomNav()),
     );
   }
